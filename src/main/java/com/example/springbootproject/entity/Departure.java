@@ -1,6 +1,12 @@
 package com.example.springbootproject.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Departure {
+
+    @Id
     private int id;
     private String name;
     private String location;
