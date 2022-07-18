@@ -1,11 +1,14 @@
 package com.example.springbootproject.controller;
 
+import com.example.springbootproject.dto.DepartureDto;
 import com.example.springbootproject.entity.Departure;
 import com.example.springbootproject.service.DepartureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class DepartureController {
@@ -19,8 +22,13 @@ public class DepartureController {
     }
 
     @PostMapping("/departure")
-    public Departure addDeparture(@RequestBody Departure departure){
-        return departureService.addDeparture(departure);
+    public ResponseEntity<Departure> addDeparture(@RequestBody Departure departure){
+        Departure returnValue = departureService.addDeparture(departure);
+        if(Objects.isNull(returnValue)){
+            return ResponseEntity.badRequest().build();
+        }else {
+            return ResponseEntity.ok(returnValue);
+        }
     }
 
     @GetMapping("/departures")
@@ -28,9 +36,25 @@ public class DepartureController {
         return departureService.getDepartures();
     }
 
+    @GetMapping("/departure/{name}")
+    public ResponseEntity<DepartureDto> getDepartureByName(@PathVariable String name){
+        DepartureDto departureByName = departureService.getByName(name);
+
+        if(Objects.isNull(departureByName)){
+            return ResponseEntity.notFound().build();
+        }else {
+            return ResponseEntity.ok(departureByName);
+        }
+    }
+
     @PutMapping("/departure/{id}")
-    public Departure updateDeparture(@RequestBody Departure departure, @PathVariable int id){
+    public ResponseEntity<Departure> updateDeparture(@RequestBody Departure departure, @PathVariable int id){
         departure.setId(id);
-        return departureService.updateDeparture(departure);
+        Departure returnValue = departureService.updateDeparture(departure);
+        if(Objects.isNull(returnValue)){
+            return ResponseEntity.notFound().build();
+        }else {
+            return ResponseEntity.ok(returnValue);
+        }
     }
 }
