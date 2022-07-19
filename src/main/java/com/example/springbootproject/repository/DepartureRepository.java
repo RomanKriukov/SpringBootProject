@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DepartureRepository extends JpaRepository<Departure, Integer> {
 
-    @Query("select d from Departure as d  where  d.name = :name")
+    @Query("select d from Departure as d where  d.name = :name")
     Departure findDepartureByName(@Param("name") String name);
 }

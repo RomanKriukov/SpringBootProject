@@ -17,10 +17,8 @@ public class DepartureService {
 
     @Autowired
     Logger logger;
-
     @Autowired
     DepartureRepository departureRepository;
-
     @Autowired
     WorkerRepository workerRepository;
 
