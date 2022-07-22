@@ -1,8 +1,7 @@
 package com.example.springbootproject.controller;
 
-import com.example.springbootproject.entity.Departure;
 import com.example.springbootproject.entity.Worker;
-import com.example.springbootproject.repository.WorkerRepository;
+import com.example.springbootproject.entity.WorkerInfo;
 import com.example.springbootproject.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -61,14 +60,50 @@ public class WorkerController {
         }
     }
 
+    @GetMapping("/departure/{departure_id}/workers")
+    public ResponseEntity<List<Worker>> getWorkersByDeparture(@PathVariable int departure_id){
+        List<Worker> workersByDeparture = workerService.getWorkersByDeparture(departure_id);
+
+        if(workersByDeparture.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.ok(workersByDeparture);
+        }
+    }
+
     @PutMapping("/worker/{id}")
     public ResponseEntity<Worker> updateWorker(@RequestBody Worker worker, @PathVariable int id){
         worker.setId(id);
         Worker returnValue = workerService.updateWorker(worker);
+
         if(Objects.isNull(returnValue)){
             return ResponseEntity.notFound().build();
         }else {
             return ResponseEntity.ok(returnValue);
+        }
+    }
+
+    @PostMapping("/worker/{id}/info")
+    public ResponseEntity<WorkerInfo> addWorkerInfo(@PathVariable int id, @RequestBody WorkerInfo workerInfo){
+        workerInfo.setId(id);
+        WorkerInfo returnValue = workerService.addWorkerInfo(workerInfo);
+
+        if(Objects.isNull(returnValue)){
+            return ResponseEntity.badRequest().build();
+        }else{
+            return ResponseEntity.ok(returnValue);
+        }
+    }
+
+    @PutMapping("/worker/{id}/info")
+    public ResponseEntity<WorkerInfo> updateWorkerInfo(@PathVariable int id, @RequestBody WorkerInfo workerInfo){
+        workerInfo.setId(id);
+        WorkerInfo returnValue = workerService.updateWorkerInfo(workerInfo);
+
+        if(Objects.isNull(returnValue)){
+            return ResponseEntity.badRequest().build();
+        }else{
+            return ResponseEntity.ok(workerInfo);
         }
     }
 }
