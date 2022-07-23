@@ -18,13 +18,16 @@ public class WorkerController {
 
     @PostMapping("/worker")
     public ResponseEntity<Worker> addWorker(@RequestBody Worker worker){
-        Worker returnValue = workerService.addWorker(worker);
 
-        if(Objects.isNull(returnValue)){
-            return ResponseEntity.badRequest().build();
-        }else {
-            return ResponseEntity.ok(returnValue);
-        }
+        return ResponseEntity.ok(workerService.addWorker(worker));
+
+//        Worker returnValue = workerService.addWorker(worker);
+//
+//        if(Objects.isNull(returnValue)){
+//            return ResponseEntity.badRequest().build();
+//        }else {
+//            return ResponseEntity.ok(returnValue);
+//        }
     }
 
     @GetMapping("/workers")

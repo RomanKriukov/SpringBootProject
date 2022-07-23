@@ -23,14 +23,17 @@ public class WorkerService {
     WorkerInfoRepository workerInfoRepository;
 
     public Worker addWorker(Worker worker){
-        Optional<Worker> workerById = workerRepository.findById(worker.getId());
 
-        if(workerById.isEmpty()){
-            return workerRepository.save(worker);
-        }else{
-            logger.logMessage(String.format("Worker with id = %s already exists", worker.getId()));
-            return null;
-        }
+        return workerRepository.save(worker);
+
+//        Optional<Worker> workerById = workerRepository.findById(worker.getId());
+//
+//        if(workerById.isEmpty()){
+//            return workerRepository.save(worker);
+//        }else{
+//            logger.logMessage(String.format("Worker with id = %s already exists", worker.getId()));
+//            return null;
+//        }
     }
 
     public List<Worker> getAllWorkers(){

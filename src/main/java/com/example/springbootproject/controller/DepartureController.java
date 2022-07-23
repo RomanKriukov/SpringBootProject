@@ -32,8 +32,10 @@ public class DepartureController {
     }
 
     @GetMapping("/departures")
-    public List<Departure> getAllDepartures(){
-        return departureService.getDepartures();
+    public List<Departure> getAllDepartures(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                                            @RequestParam(value = "size", required = false, defaultValue = "100") int size,
+                                            @RequestParam(value = "sort", required = false, defaultValue = "id") String sort){
+        return departureService.getDepartures(page, size, sort);
     }
 
     @GetMapping("/departure/{name}")

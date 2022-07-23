@@ -3,10 +3,16 @@ package com.example.springbootproject.service;
 import com.example.springbootproject.dto.DepartureDto;
 import com.example.springbootproject.entity.Departure;
 import com.example.springbootproject.entity.Worker;
+import com.example.springbootproject.exception.NotFoundException;
 import com.example.springbootproject.logger.Logger;
+import com.example.springbootproject.mapper.DepartureMapper;
 import com.example.springbootproject.repository.DepartureRepository;
 import com.example.springbootproject.repository.WorkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,6 +28,9 @@ public class DepartureService {
     @Autowired
     WorkerRepository workerRepository;
 
+    @Autowired
+    DepartureMapper departureMapper;
+
     public String getMessageWithRandomNumber(){
         String message = "message with " + new Random().nextInt(10);
         logger.logMessage(message);
@@ -33,15 +42,12 @@ public class DepartureService {
         Departure departureByName = departureRepository.findDepartureByName(name);
 
         if(Objects.isNull(departureByName)){
-            return null;
+            throw new NotFoundException("NOT FOUND WITH NAME = ", name);
         }
 
         List<Worker> workers = workerRepository.findAllByDepartureId(departureByName.getId());
 
-        DepartureDto departureDto = new DepartureDto()
-                .setName(departureByName.getName())
-                .setId(departureByName.getId())
-                .setLocation(departureByName.getLocation())
+        DepartureDto departureDto = departureMapper.toDto(departureByName)
                 .setWorkerNames(workers.stream().map(Worker::getName).collect(Collectors.toList()));
         return departureDto;
     }
@@ -68,7 +74,10 @@ public class DepartureService {
         }
     }
 
-    public List<Departure> getDepartures(){
-        return departureRepository.findAll();
+
+    public List<Departure> getDepartures(int pageNumber, int size, String sortField){
+        Pageable pageable = PageRequest.of(pageNumber, size, Sort.by(sortField));
+        Page<Departure> page = departureRepository.findAll(pageable);
+        return page.getContent();
     }
 }
