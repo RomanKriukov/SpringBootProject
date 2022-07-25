@@ -29,18 +29,19 @@ public class WorkerService {
     @Autowired
     WorkerMapper workerMapper;
 
+    @Autowired
+    DepartureService departureService;
+
     public Worker addWorker(Worker worker){
+        departureService.getDepartureById(worker.getDeparture().getId());
+        Optional<Worker> workerById = workerRepository.findById(worker.getId());
 
-        return workerRepository.save(worker);
-
-//        Optional<Worker> workerById = workerRepository.findById(worker.getId());
-//
-//        if(workerById.isEmpty()){
-//            return workerRepository.save(worker);
-//        }else{
-//            logger.logMessage(String.format("Worker with id = %s already exists", worker.getId()));
-//            return null;
-//        }
+        if(workerById.isEmpty()){
+            return workerRepository.save(worker);
+        }else{
+            logger.logMessage(String.format("Worker with id = %s already exists", worker.getId()));
+            return null;
+        }
     }
 
     public List<Worker> getAllWorkers(){

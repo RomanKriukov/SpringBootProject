@@ -51,6 +51,16 @@ public class DepartureService {
         return departureDto;
     }
 
+    public DepartureDto getDepartureById(int id){
+        Optional<Departure> departure = departureRepository.findById(id);
+
+        if(departure.isEmpty()){
+            throw new NotFoundException(Departure.class.getSimpleName(), "id", id);
+        }else{
+            return departureMapper.toDto(departure.get());
+        }
+    }
+
     public Departure addDeparture(Departure departure){
         Optional<Departure> departureById = departureRepository.findById(departure.getId());
 
