@@ -51,17 +51,17 @@ public class WorkerService {
         Optional<Worker> workerById = workerRepository.findById(worker_id);
 
         if(workerById.isEmpty()){
-            return null;
+            throw new NotFoundException(Worker.class.getSimpleName(), "id", worker_id);
         }else{
             return workerById.get();
         }
     }
 
-    public List<WorkerDto> getWorkerByName(String name){
+    public List<WorkerDto> getWorkersByName(String name){
         List<Worker> workerByName = workerRepository.findWorkerByName(name);
 
         if(workerByName.isEmpty()){
-            throw new NotFoundException(Worker.class.getSimpleName(), name);
+            throw new NotFoundException(Worker.class.getSimpleName(), "name", name);
         }
         List<WorkerDto> workerDtoList = new ArrayList<>();
         for(Worker worker : workerByName){

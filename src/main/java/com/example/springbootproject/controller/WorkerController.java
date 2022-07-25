@@ -44,16 +44,12 @@ public class WorkerController {
     public ResponseEntity<Worker> getWorkerById(@PathVariable int worker_id){
         Worker workerById = workerService.getWorkerById(worker_id);
 
-        if(Objects.isNull(workerById)){
-            return ResponseEntity.notFound().build();
-        }else{
-            return ResponseEntity.ok(workerById);
-        }
+        return ResponseEntity.ok(workerById);
     }
 
     @GetMapping("/workers/{name}")
-    public ResponseEntity<List<WorkerDto>> getWorkerByName(@PathVariable String name){
-        List<WorkerDto> workerByName = workerService.getWorkerByName(name);
+    public ResponseEntity<List<WorkerDto>> getWorkersByName(@PathVariable String name){
+        List<WorkerDto> workerByName = workerService.getWorkersByName(name);
 
         return ResponseEntity.ok(workerByName);
     }

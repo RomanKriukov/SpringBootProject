@@ -41,7 +41,7 @@ public class DepartureService {
 
         Departure departureByName = departureRepository.findDepartureByName(name);
         if(Objects.isNull(departureByName)){
-            throw new NotFoundException(Departure.class.getSimpleName(), name);
+            throw new NotFoundException(Departure.class.getSimpleName(), "name", name);
         }
 
         List<Worker> workers = workerRepository.findAllByDepartureId(departureByName.getId());
