@@ -1,6 +1,7 @@
 package com.example.springbootproject.entity;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @Entity
+@Accessors(chain = true)
 public class Worker {
 
     @Id

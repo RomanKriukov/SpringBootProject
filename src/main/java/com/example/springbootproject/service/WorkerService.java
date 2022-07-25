@@ -1,13 +1,17 @@
 package com.example.springbootproject.service;
 
+import com.example.springbootproject.dto.WorkerDto;
 import com.example.springbootproject.entity.WorkerInfo;
 import com.example.springbootproject.entity.Worker;
+import com.example.springbootproject.exception.NotFoundException;
 import com.example.springbootproject.logger.Logger;
+import com.example.springbootproject.mapper.WorkerMapper;
 import com.example.springbootproject.repository.WorkerInfoRepository;
 import com.example.springbootproject.repository.WorkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +25,9 @@ public class WorkerService {
 
     @Autowired
     WorkerInfoRepository workerInfoRepository;
+
+    @Autowired
+    WorkerMapper workerMapper;
 
     public Worker addWorker(Worker worker){
 
@@ -50,10 +57,17 @@ public class WorkerService {
         }
     }
 
-    public List<Worker> getWorkerByName(String name){
+    public List<WorkerDto> getWorkerByName(String name){
         List<Worker> workerByName = workerRepository.findWorkerByName(name);
 
-        return workerByName;
+        if(workerByName.isEmpty()){
+            throw new NotFoundException(Worker.class.getSimpleName(), name);
+        }
+        List<WorkerDto> workerDtoList = new ArrayList<>();
+        for(Worker worker : workerByName){
+            workerDtoList.add(workerMapper.toDto(worker));
+        }
+        return workerDtoList;
     }
 
     public List<Worker> getWorkersByDeparture(int departure_id){

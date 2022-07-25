@@ -42,11 +42,7 @@ public class DepartureController {
     public ResponseEntity<DepartureDto> getDepartureByName(@PathVariable String name){
         DepartureDto departureByName = departureService.getByName(name);
 
-        if(Objects.isNull(departureByName)){
-            return ResponseEntity.notFound().build();
-        }else {
-            return ResponseEntity.ok(departureByName);
-        }
+        return ResponseEntity.ok(departureByName);
     }
 
     @PutMapping("/departure/{id}")

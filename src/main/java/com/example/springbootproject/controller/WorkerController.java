@@ -1,5 +1,6 @@
 package com.example.springbootproject.controller;
 
+import com.example.springbootproject.dto.WorkerDto;
 import com.example.springbootproject.entity.Worker;
 import com.example.springbootproject.entity.WorkerInfo;
 import com.example.springbootproject.service.WorkerService;
@@ -19,15 +20,13 @@ public class WorkerController {
     @PostMapping("/worker")
     public ResponseEntity<Worker> addWorker(@RequestBody Worker worker){
 
-        return ResponseEntity.ok(workerService.addWorker(worker));
+        Worker returnValue = workerService.addWorker(worker);
 
-//        Worker returnValue = workerService.addWorker(worker);
-//
-//        if(Objects.isNull(returnValue)){
-//            return ResponseEntity.badRequest().build();
-//        }else {
-//            return ResponseEntity.ok(returnValue);
-//        }
+        if(Objects.isNull(returnValue)){
+            return ResponseEntity.badRequest().build();
+        }else {
+            return ResponseEntity.ok(returnValue);
+        }
     }
 
     @GetMapping("/workers")
@@ -53,14 +52,10 @@ public class WorkerController {
     }
 
     @GetMapping("/workers/{name}")
-    public ResponseEntity<List<Worker>> getWorkerByName(@PathVariable String name){
-        List<Worker> workerByName = workerService.getWorkerByName(name);
+    public ResponseEntity<List<WorkerDto>> getWorkerByName(@PathVariable String name){
+        List<WorkerDto> workerByName = workerService.getWorkerByName(name);
 
-        if(workerByName.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }else{
-            return ResponseEntity.ok(workerByName);
-        }
+        return ResponseEntity.ok(workerByName);
     }
 
     @GetMapping("/departure/{departure_id}/workers")

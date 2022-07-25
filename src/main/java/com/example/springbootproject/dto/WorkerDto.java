@@ -1,22 +1,17 @@
-package com.example.springbootproject.entity;
+package com.example.springbootproject.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Accessors(chain = true)
-public class WorkerInfo {
+public class WorkerDto {
 
-    @Id
     private int id;
-    private String address;
-    private int age;
+    private String name;
+    private double salary;
 }

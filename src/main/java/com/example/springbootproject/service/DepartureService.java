@@ -40,9 +40,8 @@ public class DepartureService {
     public DepartureDto getByName(String name){
 
         Departure departureByName = departureRepository.findDepartureByName(name);
-
         if(Objects.isNull(departureByName)){
-            throw new NotFoundException("NOT FOUND WITH NAME = ", name);
+            throw new NotFoundException(Departure.class.getSimpleName(), name);
         }
 
         List<Worker> workers = workerRepository.findAllByDepartureId(departureByName.getId());
